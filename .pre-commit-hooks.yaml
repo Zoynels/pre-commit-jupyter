@@ -1,7 +1,7 @@
-- id: jupyter-notebook-cleanup
-  name: jupyter-notebook-cleanup
-  description: "Remove cel output for better security"
-  entry: jupyter-notebook-cleanup
+- id: zs-jupyter-notebook-cleanup
+  name: zs-jupyter-notebook-cleanup
+  description: "Remove cell output for better security and less git diff"
+  entry: zs-jupyter-notebook-cleanup
   language: python
   language_version: python3
   files: \.ipynb$
