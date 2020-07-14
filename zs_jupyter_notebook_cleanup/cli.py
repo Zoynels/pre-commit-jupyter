@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import argparse
 import copy
 import difflib
@@ -13,31 +14,30 @@ from collections import OrderedDict
 def parse_args():
     psr = argparse.ArgumentParser()
     psr.add_argument("files", nargs="*", help="ipynb files")
-    psr.add_argument("--diff", action="store_true", default=False, 
-        help="Show modification difference")
-    psr.add_argument("--inplace", "--in-place", action="store_true", default=False, 
-        help="Save changes inplace in ipynb files.")
-    psr.add_argument("--pin-patterns", default="[pin]", 
-        help="Semicolon-separated patterns (wildcards are not supported)")
+    psr.add_argument("--diff", action="store_true", default=False,
+                     help="Show modification difference")
+    psr.add_argument("--inplace", "--in-place", action="store_true", default=False,
+                     help="Save changes inplace in ipynb files.")
+    psr.add_argument("--pin-patterns", default="[pin]",
+                     help="Semicolon-separated patterns (wildcards are not supported)")
     psr.add_argument("--exit-zero", action="store_true", default=False,
-        help="Exit with status code \"0\" even if there are errors.")
+                     help="Exit with status code 0 even if there are errors.")
     psr.add_argument("--remove-kernel-metadata", action="store_true", default=False,
-        help="Remove blocks with kernel metadata.")
+                     help="Remove blocks with kernel metadata.")
     psr.add_argument("--remove-execution-count", action="store_true", default=False,
-        help="Remove blocks with execution count.")
+                     help="Remove blocks with execution count.")
     psr.add_argument("--remove-outputs", action="store_true", default=False,
-        help="Remove blocks with output.")
+                     help="Remove blocks with output.")
     psr.add_argument("--remove-cell-metadata-all", action="store_true", default=False,
-        help="Remove blocks with cell metadata, clear all metadata.")
-    psr.add_argument("--remove-cell-metadata-patterns", nargs="+", default="", 
-        help="Semicolon-separated patterns (wildcards are not supported)")
+                     help="Remove blocks with cell metadata, clear all metadata.")
+    psr.add_argument("--remove-cell-metadata-patterns", nargs="+", default="",
+                     help="Semicolon-separated patterns (wildcards are not supported)")
     psr.add_argument("--remove-empty-cell", action="store_true", default=False,
-        help="Remove empty cells.")
+                     help="Remove empty cells.")
     psr.add_argument("--remove-spaces-cell", action="store_true", default=False,
-        help="Remove cells which contain only spaces/tabs/newlines.")
+                     help="Remove cells which contain only spaces/tabs/newlines.")
 
     args = psr.parse_args()
-    #args.remove_cell_metadata_patterns = args.remove_cell_metadata_patterns.split(";")
 
     return args
 
@@ -51,6 +51,7 @@ def main():
     if diff_files_count != 0 and not args.exit_zero:
         sys.exit(1)
     return sys.exit(0)
+
 
 def check_if_unremovable(source, patterns):
     """comment annotation must be the first line and started with #"""
@@ -77,7 +78,7 @@ def remove_output_file(path, patterns, args):
             if args.diff:
                 before_l, after_l = before_j.splitlines(), after_j.splitlines()
                 print("\n".join(difflib.unified_diff(before_l, after_l, fromfile="before", tofile="after")))
-            if args.inplace: # overwrite to the original file
+            if args.inplace:  # overwrite to the original file
                 with open(path, "wt", encoding="utf-8") as fo:
                     json.dump(new_data, fo, **dump_args)
                     fo.write("\n")
